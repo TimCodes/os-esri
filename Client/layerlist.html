@@ -1,0 +1,39 @@
+<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="z-index : 100; position: absolute">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Welcome</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <ul class="mdl-list"  ng-sortable="vm.barConfig">
+        <li class="mdl-list__item" ng-repeat="layer in vm.layers " ng-init="$last && vm.finished()" style = "border-bottom: solid 1px">
+            
+         <span class="mdl-list__item-primary-content">
+           
+           {{layer.name}} {{layer.opacity}}
+         </span>
+         <span class="mdl-list__item-text-body">
+           <input 
+               ng-mouseup ="vm.setopacity(layer.id, $event)" 
+               ng-mouseover ="vm.stop($event)" 
+               ng-mouseleave="vm.start()"
+               class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" value="{{layer.opacity}}" step=".1">
+         </span>
+         <br>
+         <span class="mdl-list__item-secondary-content">
+           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-{{$index}}">
+             <input type="checkbox" id="list-switch-{{$index}}" class="mdl-switch__input" ng-checked="{{layer.visible}}" ng-click = "vm.setViz(layer.id,$event)"/>
+           </label>
+        </span>
+       </li>
+      </ul>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Get Started
+    </a>
+    </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <i class="material-icons">share</i>
+    </button>
+    </div>
+</div>

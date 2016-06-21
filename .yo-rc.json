@@ -1,0 +1,31 @@
+{
+  "generator-ng-component": {
+    "routeDirectory": "Client/",
+    "directiveDirectory": "Client/",
+    "componentDirectory": "Client/",
+    "filterDirectory": "Client/",
+    "serviceDirectory": "Client/",
+    "basePath": "",
+    "moduleName": "",
+    "modulePrompt": true,
+    "filters": [
+      "uirouter",
+      "jasmine"
+    ],
+    "extensions": [
+      "js",
+      "html",
+      "scss"
+    ],
+    "directiveSimpleTemplates": "",
+    "directiveComplexTemplates": "",
+    "filterTemplates": "",
+    "serviceTemplates": "",
+    "factoryTemplates": "",
+    "controllerTemplates": "",
+    "componentTemplates": "",
+    "decoratorTemplates": "",
+    "providerTemplates": "",
+    "routeTemplates": ""
+  }
+}
