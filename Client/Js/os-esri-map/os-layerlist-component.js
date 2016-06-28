@@ -23,7 +23,6 @@
             },
             require: {
 
-                "mapCtrl": "^osMap"
 
             },
             templateUrl: 'layerlist.html'
@@ -31,22 +30,20 @@
 
         }
 
-        function osLayerListController($rootScope, $scope) {
+        function osLayerListController($rootScope, $scope, OsMapService) {
             var vm = this;
             vm.layers = [];
-            console.log('controller')
+            vm.map= OsMapService.getMap();
+           
             vm.barConfig = {
                 group: 'foobar',
                 animation: 150,
                 disabled: false,
                // filter:'.mdl-slider',
                 onSort: function( /** ngSortEvent */ evt) {
-                    // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
-                    
-                    console.log(evt)
                     vm.layers.forEach(function (el, idx, arr) {
-                       var layer =vm.mapCtrl.map.getLayer(el.id);
-                      vm.mapCtrl.map.reorderLayer(layer, idx);
+                       var layer =getMap().getLayer(el.id);
+                       getMap().reorderLayer(layer, idx);
                     }) 
                     
                     
@@ -55,27 +52,27 @@
             
             vm.stop = function (evt) {
                 // body...
-               
                 vm.barConfig.disabled = true;
                
             };
-            vm.$onInit = function(){console.log("what the ehll man")}
+            vm.$postLink = function(){
+                
+                addLayertoList(getMap())
+            }
             
             vm.start = function () {
                 vm.barConfig.disabled = false;
             };
             
             vm.setopacity = function (id, evt) {
-            console.log(id)   
-            console.log(evt.target)
-            console.log('fuck');
-              var layer =vm.mapCtrl.map.getLayer(id);
+         
+              var layer = getMap().getLayer(id);
               layer.setOpacity(evt.target.value)
             }
             
            vm.setViz = function (id, evt) {
-               console.log(evt.target.checked)
-                var layer =vm.mapCtrl.map.getLayer(id);
+              
+                var layer =OsMapService.getMap().getLayer(id);
                 layer.setVisibility(evt.target.checked)
                
            }
@@ -88,39 +85,69 @@
                
             };
             
-             $rootScope.$on('os-map-loaded', function(evt, mapEvt) {
-                 addLayertoList()
+           
+            
+             $rootScope.$on('os-map-loaded', function(evt, event) {
+                
+                 addLayertoList(event.map)
                  
              })
 
-            $rootScope.$on('os-map-layeradd', function(evt, mapEvt) {
-              addLayertoList();
+            $rootScope.$on('os-map-layeradd', function(evt, event) {
+              addLayertoList(event.map);
               
 
             }); 
+              
+            function getMap(){
+               return OsMapService.getMap();
+            }
+               
 
            
 
-            function addLayertoList(){
+            function addLayertoList(map){
                 
-                     console.log('layer types')
-                var layer = vm.mapCtrl.map.getLayer(vm.mapCtrl.map.graphicsLayerIds[0]);
-                console.log(layer.type)
-                console.log(layer.fields)
-                console.log(layer)
-                console.log('------------------------ layer name -------------------------');
-                console.log(layer._attrs.name)
-                console.log(layer.name)
+
                 vm.layers = [];
-                vm.mapCtrl.map.graphicsLayerIds.forEach(function(el, idx, arr) {
-                    var layer = vm.mapCtrl.map.getLayer(el);
+                map.getLayersVisibleAtScale().forEach(function(el, idx, arr) {
+                    console.log(arr.length);
+                    var layer = map.getLayer(el.id);
+                   console.log("-------------------- idx ------------------")
+                   console.log(idx);
+                   console.log('--------------------------layer ----------------------')
+                   console.log(layer)
+                    if (  vm.layers.map(function(x) {return x.id; }).indexOf(layer.id) === -1) {
+                        $scope.$apply(function(argument) {
+                       
+                             vm.layers.push({
+                            name: layer._attrs.name || layer.name || layer.layerInfos[0].name  || layer.id || layer.layerInfos[0].name,
+                            id: layer.id,
+                            opacity: layer.opacity,
+                            visible: layer.visible
+                        });
+                          
+                      
+                        console.log(layer)
+                        console.log(layer.layerInfos)
+                    })
+                    } else {
+                        console.log('layer already present')
+                    }
+                    
+                  
+
+                });
+              /*
+                map.graphicsLayerIds.forEach(function(el, idx, arr) {
+                    var layer = map.getLayer(el);
                      
-                    console.log('----------------- layer list check --------------------');
+                 //   console.log('----------------- layer list check --------------------');
                     console.log(  vm.layers.map(function(x) {return x.id; }).indexOf(layer.id))
                     if (  vm.layers.map(function(x) {return x.id; }).indexOf(layer.id) === -1) {
                         $scope.$apply(function(argument) {
                         vm.layers.push({
-                            name: layer._attrs.name || "null" || layer.name,
+                            name: layer._attrs.name  || layer.name,
                             id: layer.id,
                             opacity: layer.opacity,
                             visible: layer.visible
@@ -132,15 +159,43 @@
                         console.log('layer already present')
                     }
                     
-                    console.log(vm.layers)
-                    console.log(layer)
+                   
 
                 })
                 
+                map.layerIds.forEach(function(el, idx, arr) {
+                    var layer = map.getLayer(el);
+                     
+                  
+                    if (  vm.layers.map(function(x) {return x.id; }).indexOf(layer.id) === -1) {
+                        $scope.$apply(function(argument) {
+                       if (layer.id !== 'layer0' && layer.id !== 'layer1') {
+                             vm.layers.push({
+                            name: layer._attrs.name || layer.layerInfos[0].name || layer.name || layer.id || layer.layerInfos[0].name,
+                            id: layer.id,
+                            opacity: layer.opacity,
+                            visible: layer.visible
+                        });
+                       } else {
+                           
+                       }        
+                      
+                        console.log(layer)
+                        console.log(layer.layerInfos)
+                    })
+                    } else {
+                        console.log('layer already present')
+                    }
+                    
+                  
+
+                })*/
+                console.log('layers ------------------------------------------')
+                console.log(map.layerIds)
                 setTimeout( function (argument) {
                     componentHandler.upgradeAllRegistered()
                 }, 200)
-                console.log(vm.layers)
+              
             }
 
         }

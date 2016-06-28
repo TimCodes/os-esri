@@ -1,0 +1,21 @@
+
+
+<div ng-if = "vm.isDraggable"  ng-draggable ng-show="vm.showContainer" class="mdl-cell mdl-cell--4-col mdl-cell--8-offset mdl-card mdl-shadow--4dp" style = 'background-color:#333333; z-index: 4000; position:absolute;'>
+
+    <i ng-click = "vm.turnOffCotinaer()" class="material-icons mdl-cell mdl-cell--1-col mdl-cell--11-offset">&#xE14C;</i>
+     <h4><center>{{vm.containerTitle}}</center></h4>
+     <ng-transclude></ng-transclude>
+</div>
+
+
+<div ng-if = "!vm.isDraggable" ng-show="vm.showContainer" class="mdl-cell mdl-cell--4-col mdl-cell--8-offset mdl-card mdl-shadow--4dp" style = 'background-color:#333333; z-index: 4000; position:absolute;'>
+    <i ng-click = "vm.turnOffCotinaer()" class="material-icons mdl-cell mdl-cell--1-col mdl-cell--11-offset">&#xE14C;</i>
+    <h4><center>{{vm.containerTitle}}</center></h4>
+    <ng-transclude></ng-transclude>
+</div>
+      
+    
+       
+       
+       
+   

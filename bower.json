@@ -16,7 +16,8 @@
     "bootstrap": "^3.3.6",
     "angular-component-router": "^0.2.1",
     "angular-animate": "^1.5.6",
-    "animate.css": "^3.5.2"
-    
+    "animate.css": "^3.5.2",
+    "hover": "Hover#^2.0.2",
+    "ngtouchstart": "^1.0.1"
   }
 }

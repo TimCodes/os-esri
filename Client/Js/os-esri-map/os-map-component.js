@@ -18,47 +18,41 @@
             template: "<div id= 'map' ><ng-transclude> </ng-transclude> </div>"
         }
 
-        function osMapComponentController($rootScope){
+        function osMapComponentController($rootScope,OsMapService){
             var vm = this;
             
             var panels = [];
             
       
-           vm.$postLink = function () {
+           vm.$onInit = function () {
                // body...
                   
              require(["esri/map",  "dojo/domReady!"], function(Map) {
-               console.log(vm.mapDefination)
-              var map = new Map("map",vm.mapDefination);
+              console.log(vm.mapDefination)
+              var map = OsMapService.createMap(vm.mapDefination);
+              
+             // new Map("map",vm.mapDefination);
+              
+              $rootScope.$emit('os-map-init', map )
               
               map.on('load', function (evt) {
-                 $rootScope.$emit('os-map-loaded', evt)
+                 $rootScope.$emit('os-map-loaded', {evt: evt, map:map} )
               });
               
               
             window.myMap = map;
              
-              map.on('layer-add', function (evt) {
-                $rootScope.$emit('os-map-layeradd', evt)
-                // testing some stuff here 
-           /*     console.log('layer added')
+              map.on('layer-add-result', function (evt) {
+                console.log("layer added")
                 console.log(evt)
-                
-                console.log('graphci layer ids')
-                console.log(map.graphicsLayerIds)
-                
-                 console.log( 'layer ids')
-                 console.log(map.layerIds)
-                 
-                 console.log(' first grpahics layer')
-                 console.log(map.getLayer(map.graphicsLayerIds[0]))
-                 
-                 var layer = map.getLayer(map.graphicsLayerIds[0]);
-                 console.log(layer.type)
-                 console.log(layer.fields)
-                 for(var prop in layer){
-                  // console.log(prop)
-                 }*/
+                console.log(map.layerIds)
+                console.log(map.basemapLayerIds)
+                console.log('----------------------- base map --------------------')
+                console.log(map.getBasemap());
+                console.log("-----------------visible laysers------------------");
+                console.log(map.getLayersVisibleAtScale())
+                $rootScope.$emit('os-map-layeradd', {evt:evt, map: map})
+            
               })
               // binds map to 'this' as a propty called map
               vm.map = map;

@@ -11,6 +11,8 @@
     // to avoid naming collesiosn with other libraries
     // hence the os
     angular.module('os-esri-components', [
-      'ng-sortable'
+      'ng-sortable',
+      'ngTouchstart'
+     
     ])
 }())
