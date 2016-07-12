@@ -20,24 +20,26 @@
 
         function osMapComponentController($rootScope,OsMapService){
             var vm = this;
+            var map;
             
             var panels = [];
-            
-      
-           vm.$onInit = function () {
-               // body...
-                  
-             require(["esri/map",  "dojo/domReady!"], function(Map) {
-              console.log(vm.mapDefination)
-              var map = OsMapService.createMap(vm.mapDefination);
+           map = OsMapService.createMap(vm.mapDefination);
               
              // new Map("map",vm.mapDefination);
               
               $rootScope.$emit('os-map-init', map )
               
               map.on('load', function (evt) {
-                 $rootScope.$emit('os-map-loaded', {evt: evt, map:map} )
+               //  $rootScope.$emit('os-map-loaded', {evt: evt, map:map} )
               });
+              
+            
+      
+           vm.$onInit = function () {
+               // body...
+                  
+        /*     require(["esri/map",  "dojo/domReady!"], function(Map) {
+              console.log(vm.mapDefination)
               
               
             window.myMap = map;
@@ -58,7 +60,7 @@
               vm.map = map;
               
               
-            });   
+            });   */
             
           }
           

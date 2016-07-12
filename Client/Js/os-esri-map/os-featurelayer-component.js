@@ -22,7 +22,8 @@
                 furl: '@',
                 fname: '@',
                 osInfoTemplateTitle: '@',
-                osInfoTemplateBody: '@'
+                osInfoTemplateBody: '@',
+                fclick: '&'
             },
             require: { 
                 
@@ -33,7 +34,7 @@
             
         }
         
-        function osFeatureLayercontroller($rootScope) {
+        function osFeatureLayercontroller($rootScope, OsMapService) {
             var vm = this;
           
             console.log(vm.furl)
@@ -52,7 +53,8 @@
                    
                  console.log(vm.osInfoTemplateTitle)
                     window.myfeatureLayer = FeatureLayer;
-                     var featureLayer = new FeatureLayer(vm.furl,
+                     var featureLayer = OsMapService.addFeatureLayer(vm.furl);
+                     /*new FeatureLayer(vm.furl,
                      
                        {
                          
@@ -62,7 +64,11 @@
                            
                        }
                      
-                     );
+                     );*/
+                     
+                     featureLayer.on('click', function(evt){
+                         vm.fclick({evt:evt});
+                     });
                      
                      if (vm.fname) {
                          console.log('-----------fname------------------------');
@@ -70,20 +76,13 @@
                          featureLayer.attr('name', vm.fname)
                          featureLayer.name = vm.fname
                      };
-                      vm.mapCtrl.map.addLayer(featureLayer);
+                      //vm.mapCtrl.map.addLayer(featureLayer);
                      
                   });
                 }) 
                 
-              
-                
-                
-                   
-            }
-
-
-     
-        }
+             }
+     }
     }
     
 }())
