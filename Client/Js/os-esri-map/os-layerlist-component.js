@@ -20,7 +20,8 @@
             controllerAs: 'vm',
             bindings: {
                 osClass: '@',
-                isSortable: '<'
+                isSortable: '<',
+                layers: '<'
             },
             templateUrl: 'layerlist.html'
 
@@ -99,7 +100,7 @@
             })
 
             $rootScope.$on('os-map-layeradd', function(evt, event) {
-                addLayertoList(event.map);
+                addLayertoList(OsMapService.getMap());
 
 
             });
@@ -108,35 +109,37 @@
                 return OsMapService.getMap();
             }
 
-
+            
+            
 
 
             function addLayertoList(map) {
 
 
                 vm.layers = [];
-                map.getLayersVisibleAtScale().forEach(function(el, idx, arr) {
-                    console.log(arr.length);
-                    var layer = map.getLayer(el.id);
+                // map.getLayersVisibleAtScale()
+               OsMapService.getLayers().forEach(function(el, idx, arr) {
+                    console.log(el);
+                    var layer = OsMapService.getLayer(el.name);
                     if (vm.layers.map(function(x) {
                             return x.id;
                         }).indexOf(layer.id) === -1) {
                         $scope.$apply(function(argument) {
 
                             vm.layers.push({
-                                name: layer._attrs.name || layer.name || layer.layerInfos[0].name || layer.id || layer.layerInfos[0].name,
+                                name:  el.name || layer._attrs.name || layer.layerInfos[0].name || layer.id || layer.layerInfos[0].name,
                                 id: layer.id,
                                 opacity: layer.opacity,
                                 visible: layer.visible
                             });
 
 
-                            console.log(layer)
-                            console.log(layer.layerInfos)
+                          //  console.log(layer)
+                           // console.log(layer.layerInfos)
                         })
                     }
                     else {
-                        console.log('layer already present')
+                       // console.log('layer already present')
                     }
 
 

@@ -17,14 +17,7 @@
         ////////////////
 
         function activate() {
-             $rootScope.$on('os-map-loaded', function(evt, mapEvt) {
-                 
-                var l =   OsMapService.addFeatureLayer('http://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/2')
-                
-               l.on('click', function(evt){
-                    console.log(evt)
-               });
-             })
+        
           
         }
 

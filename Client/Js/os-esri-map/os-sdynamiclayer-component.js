@@ -33,38 +33,14 @@
             
         }
         
-        function osFeatureLayercontroller($rootScope) {
+        function osFeatureLayercontroller($rootScope,  OsMapService) {
             var vm = this;
           
-            console.log(vm.furl)
+            console.log(vm.durl)
             vm.$postLink = function(){
-             $rootScope.$on('os-map-loaded', function(evt, mapEvt) {
-                   require([
-                   "esri/layers/ArcGISDynamicMapServiceLayer",
-                    "esri/InfoTemplate",
-                    "dojo/domReady!"
-                    
-                  ],
-                  function(
-                    DynamicMapServiceLayer,
-                    InfoTemplate
-                  ) {
-                   
-                 console.log(vm.osInfoTemplateTitle)
-                   
-                     var dynamicLayer = new  DynamicMapServiceLayer(vm.durl);
-                     
-                     if (vm.dname) {
-                         console.log('-----------fname------------------------');
-                         console.log(vm.fname)
-                          dynamicLayer.attr('name', vm.dname)
-                    
-                     };
-                      vm.mapCtrl.map.addLayer(dynamicLayer);
-                     
-                  });
-                }) 
-                
+            
+             
+               OsMapService.addDynamicLayer(vm.durl)    
               
                 
                 

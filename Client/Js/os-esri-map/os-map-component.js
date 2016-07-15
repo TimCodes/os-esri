@@ -27,11 +27,7 @@
               
              // new Map("map",vm.mapDefination);
               
-              $rootScope.$emit('os-map-init', map )
-              
-              map.on('load', function (evt) {
-               //  $rootScope.$emit('os-map-loaded', {evt: evt, map:map} )
-              });
+            
               
             
       
