@@ -21,41 +21,28 @@
             bindings: {
                 furl: '@',
                 fname: '@',
-                osInfoTemplateTitle: '@',
-                osInfoTemplateBody: '@',
+                infoTemplate: '<',
                 fclick: '&'
-            },
-            require: {
-
-                "mapCtrl": "^osMap"
-
-            },
+            }
 
 
         }
 
         function osFeatureLayercontroller($rootScope, OsMapService) {
             var vm = this;
-
-            console.log(vm.furl)
             vm.$postLink = function() {
+                var infoTemp = vm.infoTemplate ? vm.infoTemplate : undefined
+                OsMapService.addFeatureLayer(vm.furl, vm.fname, infoTemp)
+                    .then(function(fLayer) {
+                        var featureLayer = fLayer;
 
-                 OsMapService.addFeatureLayer(vm.furl, vm.fname)
-                 .then(function (fLayer) {
-                     var featureLayer = fLayer;
-                      console.log(' ------------  feature layer --------')
-                 console.log(featureLayer)
-                featureLayer.on('click', function(evt) {
-                    vm.fclick({
-                        evt: evt
-                    });
-                });
-                 })
-
-                
-
-
-
+                        //broadcast layer click event to binding
+                       /* featureLayer.on('click', function(evt) {
+                            vm.fclick({
+                                evt: evt
+                            })
+                        });;*/
+                    })
             }
         }
     }

@@ -20,24 +20,13 @@
             bindings: {
                 osClass: '@'
             },
-            require: {
-
-                "mapCtrl": "^osMap"
-
-            },
             template: '<div id="HomeButton" class = "{{vm.osClass}}"> </div>'
 
 
         }
 
-        function osHomeButtonController($rootScope) {
+        function osHomeButtonController($rootScope, OsMapService) {
             var vm = this;
-            console.log('controller')
-
-
-            vm.$onInit = function() {
-
-            }
 
             vm.$postLink = function() {
 
@@ -56,7 +45,7 @@
                             HomeButton
                         ) {
                             var home = new HomeButton({
-                                map: mapEvt.map
+                                map: OsMapService.getMap()
                             }, "HomeButton");
                             home.startup();
                         });

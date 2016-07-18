@@ -42,8 +42,8 @@
                 // filter:'.mdl-slider',
                 onSort: function( /** ngSortEvent */ evt) {
                     vm.layers.forEach(function(el, idx, arr) {
-                        var layer = getMap().getLayer(el.id);
-                        getMap().reorderLayer(layer, idx);
+                        var layer = OsMapService.getMap().getLayer(el.id);
+                        OsMapService.getMap().reorderLayer(layer, idx);
                     })
 
 
@@ -56,15 +56,6 @@
 
             };
             
-            vm.$postLink = function() {
-
-
-            };
-            
-            vm.$onChanges = function(){
-              //  addLayertoList(getMap());
-                
-            };
 
             vm.start = function() {
                 vm.barConfig.disabled = false;
@@ -94,22 +85,12 @@
 
 
             $rootScope.$on('os-map-loaded', function(evt, event) {
+               addLayertoList(OsMapService.getMap());
+             })
 
-                addLayertoList(event.map)
-
-            })
-
-            $rootScope.$on('os-map-layeradd', function(evt, event) {
+            $rootScope.$on('os-map-layeradd', function() {
                 addLayertoList(OsMapService.getMap());
-
-
             });
-
-            function getMap() {
-                return OsMapService.getMap();
-            }
-
-            
             
 
 
@@ -119,8 +100,10 @@
                 vm.layers = [];
                 // map.getLayersVisibleAtScale()
                OsMapService.getLayers().forEach(function(el, idx, arr) {
-                    console.log(el);
+                   console.log('------name------');
+                   console.log(el)
                     var layer = OsMapService.getLayer(el.name);
+                    console.log(layer)
                     if (vm.layers.map(function(x) {
                             return x.id;
                         }).indexOf(layer.id) === -1) {
@@ -132,14 +115,7 @@
                                 opacity: layer.opacity,
                                 visible: layer.visible
                             });
-
-
-                          //  console.log(layer)
-                           // console.log(layer.layerInfos)
                         })
-                    }
-                    else {
-                       // console.log('layer already present')
                     }
 
 
@@ -158,35 +134,3 @@
 
 }())
 
-
-/*
-               
-                
-                map.layerIds.forEach(function(el, idx, arr) {
-                    var layer = map.getLayer(el);
-                     
-                  
-                    if (  vm.layers.map(function(x) {return x.id; }).indexOf(layer.id) === -1) {
-                        $scope.$apply(function(argument) {
-                       if (layer.id !== 'layer0' && layer.id !== 'layer1') {
-                             vm.layers.push({
-                            name: layer._attrs.name || layer.layerInfos[0].name || layer.name || layer.id || layer.layerInfos[0].name,
-                            id: layer.id,
-                            opacity: layer.opacity,
-                            visible: layer.visible
-                        });
-                       } else {
-                           
-                       }        
-                      
-                        console.log(layer)
-                        console.log(layer.layerInfos)
-                    })
-                    } else {
-                        console.log('layer already present')
-                    }
-                    
-                  
-
-                })
-*/

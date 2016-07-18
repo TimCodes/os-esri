@@ -9,25 +9,22 @@
 
         var serviceThis = this;
 
-        this.fn = fn;
         this.map;
         this.isMapLoaded = false;
-        
+
         this.layers = [];
 
         var thisMap;
 
-        function fn() {
 
-
-        }
         require(["esri/map", "esri/layers/FeatureLayer", "esri/layers/ArcGISDynamicMapServiceLayer",
                 "esri/InfoTemplate", "dojo/domReady!"
             ],
-            function(Map, FeatureLayer, DynamicLayer, infoTemplate) {
+            function(Map, FeatureLayer, DynamicLayer, InfoTemplate) {
                 thisMap = Map;
                 serviceThis.newFeatureLayer = FeatureLayer;
                 serviceThis.newDynamicLayer = DynamicLayer;
+                serviceThis.newInfoTemplate = InfoTemplate;
             });
 
 
@@ -38,26 +35,24 @@
                 this.map = new thisMap("map", mapDefination)
 
                 this.map.on('layers-removed', function(evt) {
-                    console.log('layer removed')
-                    console.log(evt);
-                })
+                   $rootScope.$emit('os-map-layerremove',{
+                        map: this.map,
+                        evt: evt
+                    }) 
+                });
 
                 this.map.on('load', function(evt) {
-                    console.log('******************loaded**************')
-                    serviceThis.isMapLoaded = true;
-                    console.log(serviceThis.isMapLoaded)
                     $rootScope.$emit('os-map-loaded', {
                         evt: evt,
-                        map: map
+                        map: this.map
                     })
                 });
-                
+
                 this.map.on('layer-add', function(evt) {
-                    console.log('layer added -----------------')
-                    console.log(serviceThis.layers)
-                   $rootScope.$emit( 'os-map-layeradd', {
-                       map: this.map
-                   })
+                    $rootScope.$emit('os-map-layeradd', {
+                        map: this.map,
+                        evt: evt
+                    })
                 })
 
                 return this.map;
@@ -74,18 +69,27 @@
         };
 
         this.getMap = function(argument) {
-            console.log('get map ')
             return this.map;
         };
 
-        this.addFeatureLayer = function(layerUrl, name) {
+        this.addFeatureLayer = function(layerUrl, name, infoTemplate) {
 
             return __checkMapStatus()
                 .then(function() {
-                    var fLayer = serviceThis.newFeatureLayer(layerUrl);
+                    var defination = {
+                        mode: serviceThis.newFeatureLayer.MODE_SNAPSHOT,
+                        outFields: ["*"],
+                        infoTemplate: infoTemplate ? new serviceThis.newInfoTemplate(infoTemplate) : ""
+
+                    }
+                    var fLayer = serviceThis.newFeatureLayer(layerUrl, defination);
                     serviceThis.map.addLayer(fLayer);
-                    serviceThis.layers.push( {id : fLayer.id, name: name || " ", type: 'FeatureLayer'});
-                    
+                    serviceThis.layers.push({
+                        id: fLayer.id,
+                        name: name || " ",
+                        type: 'FeatureLayer'
+                    });
+                    console.log(serviceThis.layers)
                     return fLayer
                 })
 
@@ -98,33 +102,29 @@
                 .then(function() {
                     var dLayer = serviceThis.newDynamicLayer(layer);
                     serviceThis.map.addLayer(dLayer);
-                    serviceThis.layers.push({id : dLayer.id, name: name || " ", type: 'DynamicLayer'});
+                    serviceThis.layers.push({
+                        id: dLayer.id,
+                        name: name || " ",
+                        type: 'DynamicLayer'
+                    });
 
                     return dLayer
                 })
         };
 
-        
+
         this.getLayer = function(layerName) {
-            
-          var layer = this.layers.filter(function(el, idx, arr){
-                
+            var layer = this.layers.filter(function(el, idx, arr) {
                 return el.name === layerName;
-          });
-          
-          
-          return this.map.getLayer(layer[0].id);
-            
+            });
+            return layer[0];
+
         };
 
         this.getLayers = function() {
             return this.layers;
         };
-        
-        setTimeout(function() {
-            console.log(serviceThis.getLayer('test'))
-        }, 5000)
-      
+
 
         function __checkMapStatus() {
             var defer = $q.defer()
@@ -132,8 +132,7 @@
             var retryCounter = 0;
 
             function checkMapStatus() {
-                console.log('ceck load status')
-                console.log(serviceThis.map.loaded)
+
                 if (retryCounter >= retryLimit) {
                     defer.reject('max retry count reached')
                 }
@@ -156,6 +155,6 @@
 
 
     }
-    
+
 
 }());

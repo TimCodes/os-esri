@@ -185,8 +185,17 @@ li:hover{
                      center: [-112.521, 42.9801],
                      zoom: 10,
 
-                 }'>
-                    <os-feature-layer  fname = "Wells" fclick ="vm.testClick(evt)" furl="http://waterweb.sbtribes.com/arcgis/rest/services/WellPrac/FeatureServer/0"></os-feature-layer>
+                   }'>
+                    
+                    <os-locate-button></os-locate-button>
+                    <os-home-button></os-home-button>
+                    <os-feature-layer   
+                    info-template = "vm.wellsInfo"
+                    fname = "Wells" 
+                    fclick ="vm.testClick(evt)" 
+                    furl="http://waterweb.sbtribes.com/arcgis/rest/services/WellPrac/FeatureServer/0">
+                        
+                    </os-feature-layer>
                     <os-feature-layer fname='Guage Sites' furl='http://waterweb.sbtribes.com/arcgis/rest/services/FtHallGuage/FeatureServer/0'></os-feature-layer>
                     <os-dynamic-layer dname='base' durl='http://waterweb.sbtribes.com/arcgis/rest/services/BaseLayersService/MapServer'></os-dynamic-layer>
                     
