@@ -1,4 +1,4 @@
-<ul class="mdl-list" ng-sortable="vm.barConfig" ng-if = "vm.isSortable">
+<ul class="mdl-list" ng-sortable="vm.barConfig" ng-if = "vm.isSortable" >
     <li class="mdl-list__item" ng-repeat="layer in vm.layers " ng-init="$last && vm.finished()">
         <span class="mdl-list__item-primary-content">
            {{layer.name}}
@@ -23,20 +23,19 @@
 </ul>
 
 
-<ul class="mdl-list"  ng-if = "!vm.isSortable">
+<ul class="mdl-list"  ng-if = "!vm.isSortable" >
     <li class="mdl-list__item" ng-repeat="layer in vm.layers " ng-init="$last && vm.finished()">
         <span class="mdl-list__item-primary-content">
            {{layer.name}}
          </span>
         <span class="mdl-list__item-text-body">
            <input 
-               ng-mouseup ="vm.setopacity(layer.id, $event)" 
+               ng-model = "vm.test[layer.id]"
                ng-mouseover ="vm.stop($event)"
                ng-touchstart="vm.stop($event)"
                ng-mouseleave="vm.start()"
-               class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" value="{{layer.opacity}}" step=".1">
-               
-         </span>
+               class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1">
+       </span>
         <br>
         <span class="mdl-list__item-secondary-content">
            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-{{$index}}">

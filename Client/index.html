@@ -168,18 +168,18 @@ li:hover{
                
             </nav>
         </div>
-        <main class="mdl-layout__content full"  >
+        <main class="mdl-layout__content full"    >
        
             <div class="page-content full">
                
                 <!-- function argument has to be the same as what is defined in the comonnet  ({visible:vm.showContainer})-->
-            
+             <!-- is-sortable = 'true'  -->
                 <control-container container-is-shown = "vm.showLayers" container-visability = "vm.layersShow(visible)"  container-title= "Layers"> 
-                    <os-layer-list></os-layer-list>  
+                    <os-layer-list  ></os-layer-list>  
                 </control-container>
                 
                  <control-container container-is-shown = "vm.showBasemaps" container-visability = "vm.bMapShow(visible)"  is-draggable  = "true" container-title= "Base Maps"> 
-                       <os-basemap-toggle></os-basemap-toggle>
+                       <os-basemap-toggle  base-maps = "vm.maps"></os-basemap-toggle>
                  </control-container>
 
                 <os-map map-defination=' {
@@ -244,10 +244,6 @@ li:hover{
 
 
 
-    <script src="Js/os-esri-map/mservicetemp.js"></script>
-
-
-
     <script src="Js/os-esri-map/os-esri-module.js"></script>
 
 
@@ -281,6 +277,10 @@ li:hover{
 
 
     <script src="Js/os-esri-map/os-material-directive.js"></script>
+
+
+
+    <script src="Js/os-esri-map/os-md-directive.js"></script>
 
 
 

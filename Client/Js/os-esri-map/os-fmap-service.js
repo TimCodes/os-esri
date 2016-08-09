@@ -87,10 +87,12 @@
                     serviceThis.layers.push({
                         id: fLayer.id,
                         name: name || " ",
-                        type: 'FeatureLayer'
+                        type: 'FeatureLayer',
+                        visible: fLayer.visible,
+                        opacity: fLayer.opacity
                     });
                     console.log(serviceThis.layers)
-                    return fLayer
+                    return fLayer;
                 })
 
         };
@@ -105,7 +107,9 @@
                     serviceThis.layers.push({
                         id: dLayer.id,
                         name: name || " ",
-                        type: 'DynamicLayer'
+                        type: 'DynamicLayer',
+                        visible: dLayer.visible,
+                        opacity: dLayer.opacity
                     });
 
                     return dLayer
@@ -137,7 +141,7 @@
                     defer.reject('max retry count reached')
                 }
 
-                if (serviceThis.map.loaded) {
+                if (serviceThis.map && serviceThis.map.loaded) {
                     defer.resolve('map loaded')
                 }
                 else {

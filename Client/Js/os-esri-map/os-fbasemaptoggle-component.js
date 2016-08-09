@@ -20,20 +20,16 @@
             controllerAs: 'vm',
             bindings: {
                 
-               // osClass: '@'
+               baseMaps: '<'
                 
             },
-        
 
         }
 
         function osSearchController($rootScope, $scope, OsMapService) {
             var vm = this;
-            vm.maps = ["streets" , "satellite" , "hybrid" , "topo" , "gray", "terrain" ]
-            vm.$postLink = function() {
-               
-            }
-            
+            vm.maps =  vm.baseMaps || ["streets" , "satellite" , "hybrid" , "topo" , "gray", "terrain" ]
+            console.log(vm.baseMaps)
             vm.changeBaseMap = function(map){
                 OsMapService.getMap().setBasemap(map)
             }

@@ -6,14 +6,14 @@ var nodemon     = require('gulp-nodemon');
 var uglify      = require('gulp-uglify');
 var concat      = require('gulp-concat');
 var rename      = require('gulp-rename');  
-
+var order       = require("gulp-order");
 
 var paths = {
     
     index : 'index.html',
     sources: ['./Client/**/*.js', './Client/Styles/**/*.css'],
-    vendor: ['./Client/Vendor/**/*.js', './Client/Vendor/**/*.css']
-  //  js: ['*.js', './app/client/**/*.js']
+    vendor: ['./Client/Vendor/**/*.js', './Client/Vendor/**/*.css'],
+    js: ['./Client/**/*.js']
 };
 
 
@@ -54,6 +54,7 @@ gulp.task('Inject-Dep', function(){
     
    return gulp.src(paths.index)
         .pipe(wiredep({}))
+      
         .pipe(inject(gulp.src(paths.sources, {read: false}), {relative: true, ignorePath: 'Client'}))
         .pipe(inject(gulp.src(paths.vendor, {read: false}), {starttag: '<!-- inject-vendor:{{ext}} -->', relative: true,  ignorePath: 'Client'}))
         
@@ -83,6 +84,9 @@ gulp.task('vet', function(){
 gulp.task('Optimize-Code', function () {
     // path to js files 
     return gulp.src(paths.js)
+        .pipe(order([
+            'os-esri-map/os-esri-module.js'
+        ]))
         // concat files and return one file with name of main.js
         .pipe(concat('main.js'))
         // path to build folder

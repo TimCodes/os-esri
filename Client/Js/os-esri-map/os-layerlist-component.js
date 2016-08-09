@@ -30,8 +30,9 @@
 
         function osLayerListController($rootScope, $scope, OsMapService) {
            
-           
+          
             var vm = this;
+            vm.test = {};
             vm.layers = [];
             vm.map = OsMapService.getMap();
 
@@ -40,8 +41,7 @@
                 animation: 150,
                 disabled: false,
                 // filter:'.mdl-slider',
-                onSort: function( /** ngSortEvent */ evt) {
-                    vm.layers.forEach(function(el, idx, arr) {
+                onSort: function( /** ngSortEvent */ evt) {vm.layers.forEach(function(el, idx, arr) {
                         var layer = OsMapService.getMap().getLayer(el.id);
                         OsMapService.getMap().reorderLayer(layer, idx);
                     })
@@ -49,9 +49,20 @@
 
                 }
             }
+            
+            $scope.$watch("vm.test", function (newVal, oldVal) {
+                for (var prop in newVal) {
+                    if(newVal[prop] !== oldVal[prop]){
+                         var layer = OsMapService.getMap().getLayer(prop);
+                         layer.setOpacity(newVal[prop])
+                        
+                    }
+                }
+                console.log('vm.test')
+                console.log(newVal)
+            }, true)
 
             vm.stop = function(evt) {
-                // body...
                 vm.barConfig.disabled = true;
 
             };
@@ -62,9 +73,9 @@
             };
 
             vm.setopacity = function(id, evt) {
-
-                var layer = getMap().getLayer(id);
-                layer.setOpacity(evt.target.value)
+            
+              // var layer = OsMapService.getMap().getLayer(id);
+               // layer.setOpacity(evt.target.value)
             }
 
             vm.setViz = function(id, evt) {
@@ -96,39 +107,40 @@
 
             function addLayertoList(map) {
 
-
-                vm.layers = [];
-                // map.getLayersVisibleAtScale()
+               // reset layer list
+               // reset ;
+               
+               vm.layers = []
+                
                OsMapService.getLayers().forEach(function(el, idx, arr) {
-                   console.log('------name------');
-                   console.log(el)
+        
                     var layer = OsMapService.getLayer(el.name);
-                    console.log(layer)
-                    if (vm.layers.map(function(x) {
-                            return x.id;
-                        }).indexOf(layer.id) === -1) {
-                        $scope.$apply(function(argument) {
-
-                            vm.layers.push({
-                                name:  el.name || layer._attrs.name || layer.layerInfos[0].name || layer.id || layer.layerInfos[0].name,
+                            
+                    if ( isLayerinList(layer)) {
+                        console.log(layer.visible)
+                       vm.layers.push({
+                                name:  el.name || layer._attrs.name || layer.id ,
                                 id: layer.id,
                                 opacity: layer.opacity,
                                 visible: layer.visible
-                            });
-                        })
+                        });
+                        
+                        vm.test[layer.id] = layer.opacity
                     }
+                  setTimeout(function(argument) {
+                          componentHandler.upgradeAllRegistered()
+                     }, 200)
+
+               });
 
 
-
-                });
-
-
-                setTimeout(function(argument) {
-                    componentHandler.upgradeAllRegistered()
-                }, 200)
 
             }
-
+            
+            function isLayerinList(layer){
+              var ids =  vm.layers.map(function(x) { return x.id;})
+              return ids.indexOf(layer.id) === -1
+            }
         }
     }
 

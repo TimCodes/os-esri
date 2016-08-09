@@ -33,16 +33,13 @@
             vm.$postLink = function() {
                 var infoTemp = vm.infoTemplate ? vm.infoTemplate : undefined
                 OsMapService.addFeatureLayer(vm.furl, vm.fname, infoTemp)
-                    .then(function(fLayer) {
-                        var featureLayer = fLayer;
-
-                        //broadcast layer click event to binding
-                       /* featureLayer.on('click', function(evt) {
-                            vm.fclick({
-                                evt: evt
-                            })
-                        });;*/
-                    })
+                .then(function(fLayer) {
+                 var featureLayer = fLayer;
+                  //broadcast layer click event to binding
+                  featureLayer.on('click', function(evt) {
+                        vm.fclick({evt: evt});
+                    });
+                 })
             }
         }
     }

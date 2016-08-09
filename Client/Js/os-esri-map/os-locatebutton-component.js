@@ -2,10 +2,6 @@
     'use strict',
 
 
-    // declare angular module name 
-    // then a component name
-    // then a fucntion that returns a componnent defination object
-    // only when you ar first defining a module do you need the depency array
 
     angular
     .module("os-esri-components")
@@ -35,30 +31,20 @@
                     require([
                             "esri/dijit/LocateButton"
                         ],
-                        function(
-                            LocateButton
-                        ) {
+                        function(LocateButton) {
 
                             var geoLocate = new LocateButton({
                                 map: OsMapService.getMap()
                             }, "LocateButton");
                             geoLocate.startup();
 
-
-                        });
+                        }
+                    );
                 })
             }
-
-
-
         }
     }
 
 }())
 
 
-/*
-
-
-
-*/

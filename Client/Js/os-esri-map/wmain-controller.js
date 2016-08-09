@@ -20,7 +20,8 @@
 
 
         }
-
+        
+        vm.maps =   ["streets" , "satellite" ]
 
         vm.wellsInfo = {
             title: "Wells",
