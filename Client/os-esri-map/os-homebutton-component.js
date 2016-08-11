@@ -1,12 +1,6 @@
 (function() {
     'use strict',
 
-
-    // declare angular module name 
-    // then a component name
-    // then a fucntion that returns a componnent defination object
-    // only when you ar first defining a module do you need the depency array
-
     angular
     .module("os-esri-components")
     .component("osHomeButton", buildComponent())
@@ -37,31 +31,14 @@
                    components
                 */
                 $rootScope.$on('os-map-loaded', function(evt, mapEvt) {
-                    require([
-                            "esri/dijit/HomeButton",
-                            "dojo/domReady!"
-                        ],
-                        function(
-                            HomeButton
-                        ) {
-                            var home = new HomeButton({
-                                map: OsMapService.getMap()
-                            }, "HomeButton");
+                    require([ "esri/dijit/HomeButton", "dojo/domReady!"],
+                    function( HomeButton) {
+                            var home = new HomeButton({ map: OsMapService.getMap() }, "HomeButton");
                             home.startup();
-                        });
-                })
-            }
+                    });
+                });
+            };
+        };
+    };
 
-
-
-        }
-    }
-
-}())
-
-
-/*
-
-
-
-*/
+}());

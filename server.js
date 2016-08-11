@@ -4,9 +4,10 @@
 // A simple chat server using Socket.IO, Express, and Async.
 //
 
-var path   = require("path");
-var express = require('express');
-var app     = express()
+var path        = require("path");
+var express     = require('express');
+var app         = express()
+var compression = require('compression');
 
 //
 // ## SimpleServer `SimpleServer(obj)`
@@ -17,6 +18,7 @@ var app     = express()
 
 
 //router.use(express.static(path.resolve(__dirname, 'Client')));
+app.use(compression());
 app.use('/bower_components', express.static(path.resolve(__dirname, 'bower_components')))
 app.use(express.static(path.resolve(__dirname, 'Client')));
 

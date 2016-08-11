@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('os-esri-components')
+        .module('app')
         .controller('main', ControllerController);
 
     ControllerController.$inject = ['$scope', '$rootScope', 'OsMapService'];

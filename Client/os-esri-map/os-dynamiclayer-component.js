@@ -25,21 +25,18 @@
                 osInfoTemplateBody: '@'
             },
             require: {
-
                 "mapCtrl": "^osMap"
-
             },
 
 
-        }
+        };
 
         function osFeatureLayercontroller($rootScope, OsMapService) {
             var vm = this;
-
             vm.$postLink = function() {
-                OsMapService.addDynamicLayer(vm.durl, vm.dname)
+              OsMapService.addDynamicLayer(vm.durl, vm.dname);
             };
-        }
-    }
+        };
+    };
 
-}())
+}());

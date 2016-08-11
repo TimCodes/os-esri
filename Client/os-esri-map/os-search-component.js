@@ -24,27 +24,21 @@
                 
             },
             require: {
-
-                "mapCtrl": "^osMap"
-
+             "mapCtrl": "^osMap"
             },
 
-        }
+        };
 
         function osSearchController() {
             var vm = this;
 
             vm.$postLink = function() {
 
-                require([
-
-                    "esri/dijit/Search",
-                     "dojo/domReady!"
-
-                ], function(Search) {
+                require([ "esri/dijit/Search", "dojo/domReady!" ], 
+                function(Search) {
 
                     var search = new Search({
-                         enableButtonMode: true, //this enables the search widget to display as a single button
+                     enableButtonMode: true, //this enables the search widget to display as a single button
                      enableLabel: false,
                      enableInfoWindow: true,
                      showInfoWindowOnSelect: false,
@@ -53,8 +47,8 @@
                     search.startup();
 
                 });
-            }
-        }
-    }
+            };
+        };
+    };
 
-}())
+}());

@@ -1,12 +1,6 @@
 (function() {
     'use strict',
 
-
-    // declare angular module name 
-    // then a component name
-    // then a fucntion that returns a componnent defination object
-    // only when you ar first defining a module do you need the depency array
-
     angular
     .module("os-esri-components")
     .component("osLayerList", buildComponent())
@@ -48,19 +42,18 @@
 
 
                 }
-            }
+            };
             
             $scope.$watch("vm.test", function (newVal, oldVal) {
                 for (var prop in newVal) {
                     if(newVal[prop] !== oldVal[prop]){
                          var layer = OsMapService.getMap().getLayer(prop);
-                         layer.setOpacity(newVal[prop])
-                        
+                         layer.setOpacity(newVal[prop]);
                     }
+                    
                 }
-                console.log('vm.test')
-                console.log(newVal)
-            }, true)
+             
+            }, true);
 
             vm.stop = function(evt) {
                 vm.barConfig.disabled = true;
@@ -76,14 +69,14 @@
             
               // var layer = OsMapService.getMap().getLayer(id);
                // layer.setOpacity(evt.target.value)
-            }
+            };
 
             vm.setViz = function(id, evt) {
 
                 var layer = OsMapService.getMap().getLayer(id);
                 layer.setVisibility(evt.target.checked)
 
-            }
+            };
 
             vm.finished = function() {
                 setTimeout(function(argument) {
@@ -110,7 +103,7 @@
                // reset layer list
                // reset ;
                
-               vm.layers = []
+               vm.layers = [];
                 
                OsMapService.getLayers().forEach(function(el, idx, arr) {
         
@@ -126,23 +119,23 @@
                         });
                         
                         vm.test[layer.id] = layer.opacity
-                    }
-                  setTimeout(function(argument) {
+                    };
+                    setTimeout(function(argument) {
                           componentHandler.upgradeAllRegistered()
-                     }, 200)
+                     }, 200);
 
                });
 
 
 
-            }
+            };
             
-            function isLayerinList(layer){
+            function isLayerinList(layer){;
               var ids =  vm.layers.map(function(x) { return x.id;})
-              return ids.indexOf(layer.id) === -1
-            }
-        }
-    }
+              return ids.indexOf(layer.id) === -1;
+            };
+        };
+    };
 
-}())
+}());
 

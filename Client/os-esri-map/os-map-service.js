@@ -3,9 +3,9 @@
 
     angular
         .module('os-esri-components')
-        .service('OsMapService', Service)
+        .service('OsMapService', OsMapService)
 
-    function Service($rootScope, $q, $timeout) {
+    function OsMapService($rootScope, $q, $timeout) {
 
         var serviceThis = this;
 
@@ -147,7 +147,7 @@
                 else {
                     setTimeout(function() {
                         checkMapStatus()
-                    }, 100)
+                    }, 300)
                 }
 
                 retryCounter++

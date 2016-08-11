@@ -24,16 +24,15 @@
                 
             },
 
-        }
+        };
 
         function osSearchController($rootScope, $scope, OsMapService) {
             var vm = this;
-            vm.maps =  vm.baseMaps || ["streets" , "satellite" , "hybrid" , "topo" , "gray", "terrain" ]
-            console.log(vm.baseMaps)
+            vm.maps =  vm.baseMaps || ["streets" , "satellite" , "hybrid" , "topo" , "gray", "terrain" ];
             vm.changeBaseMap = function(map){
-                OsMapService.getMap().setBasemap(map)
+                OsMapService.getMap().setBasemap(map);
             }
-        }
-    }
+        };
+    };
 
-}())
+}());

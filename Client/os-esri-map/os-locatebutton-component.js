@@ -19,7 +19,7 @@
             },
             template: '<div id="LocateButton" class = "{{vm.osClass}}"> </div>'
 
-
+            
         }
 
         function osLocateButtonController($rootScope, OsMapService) {
@@ -28,23 +28,20 @@
             vm.$onInit = function() {
                 $rootScope.$on('os-map-loaded', function(evt, mapEvt) {
 
-                    require([
-                            "esri/dijit/LocateButton"
-                        ],
-                        function(LocateButton) {
+                    require(["esri/dijit/LocateButton"],
+                    function(LocateButton) {
 
-                            var geoLocate = new LocateButton({
+                        var geoLocate = new LocateButton({
                                 map: OsMapService.getMap()
                             }, "LocateButton");
                             geoLocate.startup();
 
-                        }
-                    );
-                })
-            }
-        }
-    }
+                     });
+                });
+            };
+        };
+    };
 
-}())
+}());
 
 

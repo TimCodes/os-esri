@@ -1,5 +1,3 @@
-// start with wrappign in an IIFE
-//  then declare you angular code
 (function(){
     'use strict';
     
@@ -14,5 +12,6 @@
       'ng-sortable',
       'ngTouchstart'
      
-    ])
-}())
+    ]);
+    // inlude ; at end of file or it will mess with concat and minimize
+}());

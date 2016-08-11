@@ -1,11 +1,5 @@
 (function() {
-    'use strict',
-
-
-    // declare angular module name 
-    // then a component name
-    // then a fucntion that returns a componnent defination object
-    // only when you ar first defining a module do you need the depency array
+    'use strict';
 
     angular
     .module("os-esri-components")
@@ -31,7 +25,7 @@
         function osFeatureLayercontroller($rootScope, OsMapService) {
             var vm = this;
             vm.$postLink = function() {
-                var infoTemp = vm.infoTemplate ? vm.infoTemplate : undefined
+                var infoTemp = vm.infoTemplate ? vm.infoTemplate : undefined;
                 OsMapService.addFeatureLayer(vm.furl, vm.fname, infoTemp)
                 .then(function(fLayer) {
                  var featureLayer = fLayer;
@@ -41,7 +35,7 @@
                     });
                  })
             }
-        }
-    }
+        };
+    };
 
-}())
+}());
