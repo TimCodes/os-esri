@@ -92,10 +92,10 @@ gulp.task('Optimize-Code', function () {
             
         ]/*,   {base: './Client/Js/'} */ ))
         // concat files and return one file with name of main.js
-        .pipe(concat('test.js'))
+        .pipe(concat('main.js'))
       //  .pipe(rename('main.min.js'))
       //  .pipe(uglify())
-        .pipe(gzip())
+       // .pipe(gzip())
         .pipe(gulp.dest('./Client/os-esri-map/dist/'))
 });
 

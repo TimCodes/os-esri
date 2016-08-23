@@ -9,9 +9,7 @@
     // to avoid naming collesiosn with other libraries
     // hence the os
     angular.module('os-esri-components', [
-      'ng-sortable',
-      'ngTouchstart'
-     
+      'ng-sortable'
     ]);
     // inlude ; at end of file or it will mess with concat and minimize
 }());
@@ -21,9 +19,9 @@
 
     angular
         .module('os-esri-components')
-        .service('OsMapService', Service)
+        .service('OsMapService', OsMapService)
 
-    function Service($rootScope, $q, $timeout) {
+    function OsMapService($rootScope, $q, $timeout) {
 
         var serviceThis = this;
 
@@ -165,7 +163,7 @@
                 else {
                     setTimeout(function() {
                         checkMapStatus()
-                    }, 100)
+                    }, 300)
                 }
 
                 retryCounter++
@@ -333,6 +331,7 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                 .then(function(fLayer) {
                  var featureLayer = fLayer;
                   //broadcast layer click event to binding
+                  
                   featureLayer.on('click', function(evt) {
                         vm.fclick({evt: evt});
                     });
@@ -407,8 +406,49 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                 isSortable: '<',
                 layers: '<'
             },
-            templateUrl: 'layerlist.html'
-
+            template: '<ul class="mdl-list" ng-sortable="vm.barConfig" ng-if = "vm.isSortable" > ' +
+              '<li class="mdl-list__item" ng-repeat="layer in vm.layers " ng-init="$last && vm.finished()"> ' +
+                 '<span class="mdl-list__item-primary-content">' +
+                    '   {{layer.name}} ' +
+                    ' </span> ' +
+                    '<span class="mdl-list__item-text-body">'+
+                       '<input ' +
+                          'ng-mouseup ="vm.setopacity(layer.id, $event)" '+
+                          'ng-mouseover ="vm.stop($event)"'+
+                          'ng-touchstart="vm.stop($event)"'+
+                          'ng-mouseleave="vm.start()"'+
+                          'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" value="{{layer.opacity}}" step=".1">'+
+                           
+                     '</span>'+
+                    '<br>'+
+                    '<span class="mdl-list__item-secondary-content">'+
+                       '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-{{$index}}">'+
+                         '<input type="checkbox" id="list-switch-{{$index}}" class="mdl-switch__input" ng-checked="{{layer.visible}}" ng-click = "vm.setViz(layer.id,$event)"/>' +
+                       '</label>'+
+                    '</span>'+
+                '</li>'+
+            '</ul>' +
+            '<ul class="mdl-list"  ng-if = "!vm.isSortable" >' +
+                '<li class="mdl-list__item" ng-repeat="layer in vm.layers " ng-init="$last && vm.finished()">'+
+                    '<span class="mdl-list__item-primary-content">'+
+                       '{{layer.name}}'+
+                     '</span>'+
+                    '<span class="mdl-list__item-text-body">'+
+                       '<input'+
+                           'ng-model = "vm.test[layer.id]"'+
+                           'ng-mouseover ="vm.stop($event)"'+
+                           'ng-touchstart="vm.stop($event)"'+
+                           'ng-mouseleave="vm.start()"'+
+                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1">'+
+                   '</span>'+
+                    '<br>' +
+                    '<span class="mdl-list__item-secondary-content">'+
+                       '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-{{$index}}">'+
+                         '<input type="checkbox" id="list-switch-{{$index}}" class="mdl-switch__input" ng-checked="{{layer.visible}}" ng-click = "vm.setViz(layer.id,$event)"/>'+
+                       '</label>'+
+                    '</span>'+
+                '</li>'+
+            '</ul>'
 
         }
 
@@ -662,66 +702,3 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
     };
 
 }());
-(function() {
-    'use strict';
-
-    angular
-        .module('os-esri-components')
-        .controller('main', ControllerController);
-
-    ControllerController.$inject = ['$scope', '$rootScope', 'OsMapService'];
-
-    function ControllerController($scop, $rootScope, OsMapService) {
-        var vm = this;
-        vm.showLayers = false;
-        vm.showBasemaps = false;
-
-        activate();
-
-        ////////////////
-
-        function activate() {
-
-
-        }
-        
-        vm.maps =   ["streets" , "satellite" ]
-
-        vm.wellsInfo = {
-            title: "Wells",
-            content: "Current Owner: ${CURR_OWNER}</br>" +
-                "Original Owner: ${ORIG_OWNER}</br>ID : ${well_id} </br>USE: ${USE_ }</br>"
-        }
-        
-         vm.togleLayers = function(argument) {
-            vm.showLayers = !vm.showLayers;
-        };
-        vm.togleLayers = function(argument) {
-            vm.showLayers = !vm.showLayers;
-        };
-
-        vm.toggleBaseMaps = function() {
-            vm.showBasemaps = !vm.showBasemaps;
-        };
-
-
-        vm.bMapShow = function(isVisible) {
-            vm.showBasemaps = isVisible
-        };
-
-        vm.layersShow = function(isVisible) {
-            vm.showLayers = isVisible
-        };
-
-        vm.testClick = function(e) {
-            console.log('test click');
-            console.log(e);
-
-            alert(JSON.stringify(e.graphic.geometry))
-            alert(JSON.stringify(e.graphic.attributes))
-        };
-
-
-
-    }
-})();

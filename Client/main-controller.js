@@ -52,7 +52,8 @@
         vm.testClick = function(e) {
             console.log('test click');
             console.log(e);
-
+           // see html the paramter as to be the same namse
+           // as passed to it
             alert(JSON.stringify(e.graphic.geometry))
             alert(JSON.stringify(e.graphic.attributes))
         };

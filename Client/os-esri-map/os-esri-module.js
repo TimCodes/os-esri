@@ -9,9 +9,7 @@
     // to avoid naming collesiosn with other libraries
     // hence the os
     angular.module('os-esri-components', [
-      'ng-sortable',
-      'ngTouchstart'
-     
+      'ng-sortable'
     ]);
     // inlude ; at end of file or it will mess with concat and minimize
 }());
