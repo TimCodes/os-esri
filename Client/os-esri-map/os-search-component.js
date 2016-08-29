@@ -44,9 +44,15 @@
                      showInfoWindowOnSelect: false,
                         map: vm.mapCtrl.map
                     }, "search");
+                    
+                    vm.search = search;
                     search.startup();
 
                 });
+            };
+            
+            vm.$onDestroy = function () {
+                vm.search.destroy();
             };
         };
     };

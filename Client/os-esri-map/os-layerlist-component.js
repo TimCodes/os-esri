@@ -22,15 +22,12 @@
                  '<span class="mdl-list__item-primary-content">' +
                     '   {{layer.name}} ' +
                     ' </span> ' +
-                    '<span class="mdl-list__item-text-body">'+
-                       '<input ' +
-                          'ng-mouseup ="vm.setopacity(layer.id, $event)" '+
-                          'ng-mouseover ="vm.stop($event)"'+
-                          'ng-touchstart="vm.stop($event)"'+
-                          'ng-mouseleave="vm.start()"'+
-                          'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" value="{{layer.opacity}}" step=".1">'+
-                           
-                     '</span>'+
+                       '<span class="mdl-list__item-text-body">'+
+                       '<input ng-model = "vm.test[layer.id]" ng-mouseover ="vm.stop($event)"'+
+                           'ng-touchstart="vm.stop($event)"'+
+                           'ng-mouseleave="vm.start()"'+
+                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1" />'+
+                   '</span>'+
                     '<br>'+
                     '<span class="mdl-list__item-secondary-content">'+
                        '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-{{$index}}">'+
@@ -45,12 +42,10 @@
                        '{{layer.name}}'+
                      '</span>'+
                     '<span class="mdl-list__item-text-body">'+
-                       '<input'+
-                           'ng-model = "vm.test[layer.id]"'+
-                           'ng-mouseover ="vm.stop($event)"'+
+                       '<input ng-model = "vm.test[layer.id]" ng-mouseover ="vm.stop($event)"'+
                            'ng-touchstart="vm.stop($event)"'+
                            'ng-mouseleave="vm.start()"'+
-                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1">'+
+                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1" />'+
                    '</span>'+
                     '<br>' +
                     '<span class="mdl-list__item-secondary-content">'+
@@ -59,7 +54,8 @@
                        '</label>'+
                     '</span>'+
                 '</li>'+
-            '</ul>'
+            '</ul>',
+           // templateUrl: 'layerlist.html'
 
         }
 
@@ -127,7 +123,11 @@
 
             };
 
-
+        vm.$postLink = function (argument) {
+              setTimeout(function(argument) {
+                    componentHandler.upgradeAllRegistered()
+                }, 200)
+        }
 
             $rootScope.$on('os-map-loaded', function(evt, event) {
                addLayertoList(OsMapService.getMap());

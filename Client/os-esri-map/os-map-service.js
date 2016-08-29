@@ -31,6 +31,9 @@
         this.createMap = function(mapDefination) {
 
             if (thisMap) {
+                // need new instance everytime map is intiated
+                this.map = undefined;
+                this.layers = []
 
                 this.map = new thisMap("map", mapDefination)
 

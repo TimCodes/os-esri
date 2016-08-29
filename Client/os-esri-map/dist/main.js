@@ -47,6 +47,9 @@
         this.createMap = function(mapDefination) {
 
             if (thisMap) {
+                // need new instance everytime map is intiated
+                this.map = undefined;
+                this.layers = []
 
                 this.map = new thisMap("map", mapDefination)
 
@@ -195,7 +198,6 @@
        
         return {
 
-            templateUrl: 'basemaps.html',
             controller: osSearchController,
             controllerAs: 'vm',
             bindings: {
@@ -203,6 +205,15 @@
                baseMaps: '<'
                 
             },
+            template: '<ul class="mdl-list">'+
+               ' <li class="mdl-list__item" ng-repeat="map in vm.maps" ng-init="$last && vm.finished()" ng-click = "vm.changeBaseMap(map)" > '+
+                '   <div class="mdl-grid"> '+
+                  '      <span class="mdl-list__item-primary-content mdl-cell mdl-cell--4-col" > '+
+                    '     {{map}} ' +
+                    ' </span> ' +
+                ' </div>  ' +  
+               ' </li> ' +
+           ' </ul> '
 
         };
 
@@ -378,10 +389,16 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                     require([ "esri/dijit/HomeButton", "dojo/domReady!"],
                     function( HomeButton) {
                             var home = new HomeButton({ map: OsMapService.getMap() }, "HomeButton");
+                            vm.home = home
                             home.startup();
                     });
                 });
             };
+            
+            vm.$onDestroy = function () {
+                vm.home.destroy();
+            }; 
+            
         };
     };
 
@@ -411,15 +428,12 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                  '<span class="mdl-list__item-primary-content">' +
                     '   {{layer.name}} ' +
                     ' </span> ' +
-                    '<span class="mdl-list__item-text-body">'+
-                       '<input ' +
-                          'ng-mouseup ="vm.setopacity(layer.id, $event)" '+
-                          'ng-mouseover ="vm.stop($event)"'+
-                          'ng-touchstart="vm.stop($event)"'+
-                          'ng-mouseleave="vm.start()"'+
-                          'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" value="{{layer.opacity}}" step=".1">'+
-                           
-                     '</span>'+
+                       '<span class="mdl-list__item-text-body">'+
+                       '<input ng-model = "vm.test[layer.id]" ng-mouseover ="vm.stop($event)"'+
+                           'ng-touchstart="vm.stop($event)"'+
+                           'ng-mouseleave="vm.start()"'+
+                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1" />'+
+                   '</span>'+
                     '<br>'+
                     '<span class="mdl-list__item-secondary-content">'+
                        '<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-{{$index}}">'+
@@ -434,12 +448,10 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                        '{{layer.name}}'+
                      '</span>'+
                     '<span class="mdl-list__item-text-body">'+
-                       '<input'+
-                           'ng-model = "vm.test[layer.id]"'+
-                           'ng-mouseover ="vm.stop($event)"'+
+                       '<input ng-model = "vm.test[layer.id]" ng-mouseover ="vm.stop($event)"'+
                            'ng-touchstart="vm.stop($event)"'+
                            'ng-mouseleave="vm.start()"'+
-                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1">'+
+                           'class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="1" step=".1" />'+
                    '</span>'+
                     '<br>' +
                     '<span class="mdl-list__item-secondary-content">'+
@@ -448,7 +460,8 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                        '</label>'+
                     '</span>'+
                 '</li>'+
-            '</ul>'
+            '</ul>',
+           // templateUrl: 'layerlist.html'
 
         }
 
@@ -516,7 +529,11 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
 
             };
 
-
+        vm.$postLink = function (argument) {
+              setTimeout(function(argument) {
+                    componentHandler.upgradeAllRegistered()
+                }, 200)
+        }
 
             $rootScope.$on('os-map-loaded', function(evt, event) {
                addLayertoList(OsMapService.getMap());
@@ -606,11 +623,17 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                         var geoLocate = new LocateButton({
                                 map: OsMapService.getMap()
                             }, "LocateButton");
+                            
+                            vm.geoLocate = geoLocate;
                             geoLocate.startup();
 
                      });
                 });
             };
+            
+             vm.$onDestroy = function () {
+                vm.geoLocate.destroy();
+            }
         };
     };
 
@@ -694,9 +717,15 @@ angular.module('os-esri-components').directive('ngDraggable', function($document
                      showInfoWindowOnSelect: false,
                         map: vm.mapCtrl.map
                     }, "search");
+                    
+                    vm.search = search;
                     search.startup();
 
                 });
+            };
+            
+            vm.$onDestroy = function () {
+                vm.search.destroy();
             };
         };
     };

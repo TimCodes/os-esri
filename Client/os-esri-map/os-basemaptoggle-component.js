@@ -15,7 +15,6 @@
        
         return {
 
-            templateUrl: 'basemaps.html',
             controller: osSearchController,
             controllerAs: 'vm',
             bindings: {
@@ -23,6 +22,15 @@
                baseMaps: '<'
                 
             },
+            template: '<ul class="mdl-list">'+
+               ' <li class="mdl-list__item" ng-repeat="map in vm.maps" ng-init="$last && vm.finished()" ng-click = "vm.changeBaseMap(map)" > '+
+                '   <div class="mdl-grid"> '+
+                  '      <span class="mdl-list__item-primary-content mdl-cell mdl-cell--4-col" > '+
+                    '     {{map}} ' +
+                    ' </span> ' +
+                ' </div>  ' +  
+               ' </li> ' +
+           ' </ul> '
 
         };
 

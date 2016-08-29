@@ -34,11 +34,17 @@
                         var geoLocate = new LocateButton({
                                 map: OsMapService.getMap()
                             }, "LocateButton");
+                            
+                            vm.geoLocate = geoLocate;
                             geoLocate.startup();
 
                      });
                 });
             };
+            
+             vm.$onDestroy = function () {
+                vm.geoLocate.destroy();
+            }
         };
     };
 

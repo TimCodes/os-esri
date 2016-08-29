@@ -34,10 +34,16 @@
                     require([ "esri/dijit/HomeButton", "dojo/domReady!"],
                     function( HomeButton) {
                             var home = new HomeButton({ map: OsMapService.getMap() }, "HomeButton");
+                            vm.home = home
                             home.startup();
                     });
                 });
             };
+            
+            vm.$onDestroy = function () {
+                vm.home.destroy();
+            }; 
+            
         };
     };
 
